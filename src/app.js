@@ -6,6 +6,7 @@ import { db } from "./configs/mongodeConfig.js";
 import { allowListCliente } from "./configs/allow-list-config.js";
 import { blockListCliente } from "./configs/block-list-config.js";
 import { router } from "./routes/index.js";
+import { passport } from "./security/strategy-passport.js";
 
 blockListCliente.on("connect", () => console.log("Cliente Redis block-list está conectado."));
 blockListCliente.on("error", (e) => console.log("Cliente Redis block-list não pode se conectar.", e));

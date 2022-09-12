@@ -18,7 +18,7 @@ async function gerarDadosDoUsuario (dados) {
         };
     }
 
-    const senhaHash = await bcrypt.hash(senha, 15);
+    const senhaHash = await bcrypt.hash(senha, 12);
 
     return {
         nome, email, senha: senhaHash

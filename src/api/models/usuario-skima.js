@@ -6,10 +6,8 @@ const usuarioSchema = new Schema(
         email: {type: String, required: true, unique: true, index: true},
         senha: {type: String, required: true},
         emailVerificado: {type: Boolean, default: false},
-        refreshToken: {
-            token: {type: String, default: ""},
-            validade: {type: Number, default: 0}
-        },
+        refreshToken: {type: String, default: ""},
+        validade: {type: Number, default: 0},
         arquivos: [{
             nomeOriginal: {type: String, required: true},
             tamanho: {type: Number, required: true},
