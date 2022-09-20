@@ -15,12 +15,8 @@ const postControllers = {
 
     async mostrarPost (req, res) {
         try {
-            let post = await postServices.mostrarPost();
-            if (!req.autenticado) {
-                post = post.map(item => {
-                    return {titulo: item.titulo, conteudo: item.conteudo}
-                })
-            }
+            let post = await postServices.mostrarPost(req.autenticado);
+            
             return res.status(200).json(post);
         } catch (error) {
             return res.status(400).json(error.message);

@@ -1,5 +1,6 @@
-import { manipuladorPost } from "../repositories/post-repositorio.js"
-import { gerarPost } from "../../helpers/gerar-post.js"
+import { manipuladorPost } from "../repositories/post-repositorio.js";
+import { gerarPost } from "../../helpers/gerar-post.js";
+import { serializarDados } from "../../helpers/serializar-dados.js";
 
 const postDb = manipuladorPost();
 
@@ -11,9 +12,17 @@ const postServices = {
         return novoPost;
     },
 
-    async mostrarPost () {
+    async mostrarPost (autenticado) {
         const resposta = await postDb.buscarTodosPosts();
-
+        if (autenticado === false && resposta) {
+            return serializarDados(resposta, [{
+                campo: "titulo"
+            },
+            {
+                campo: "conteudo",
+                min: true
+            }])
+        }
         return resposta;
     },
 

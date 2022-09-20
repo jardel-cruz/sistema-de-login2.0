@@ -6,6 +6,7 @@ import { db } from "./configs/mongodeConfig.js";
 import { allowListCliente } from "./configs/allow-list-config.js";
 import { blockListCliente } from "./configs/block-list-config.js";
 import { router } from "./routes/index.js";
+import { cabecalhoDeRequisicao } from "./middlewares/cabeçalho-de-requisicao.js";
 import { passport } from "./security/strategy-passport.js";
 
 blockListCliente.on("connect", () => console.log("Cliente Redis block-list está conectado."));
@@ -21,6 +22,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cabecalhoDeRequisicao)
 app.use(morgan("dev"));
 
 router(app)
