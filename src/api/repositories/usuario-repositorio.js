@@ -20,6 +20,12 @@ function manipuladorUsuario () {
             return usuario;
         },
 
+        async buscarTodosUsuarios (camposDeFiltro = {}, camposTrazidos) {
+            const usuario = await Usuario.find(camposDeFiltro, camposTrazidos);
+
+            return usuario;
+        },
+
         async atualizarUsuario (usuarioId, campos = {}) {
             await Usuario.findByIdAndUpdate(usuarioId, campos);
 

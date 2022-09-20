@@ -12,4 +12,12 @@ async function validarEmail (email) {
     return !!email && regex.test(email);
 }
 
-export { validarEmail, validarNome, validarSenha };
+async function validarTitulo (titulo) {
+    return !!titulo && titulo.length > 3;
+}
+
+async function validarConteudo (conteudo) {
+    return !!conteudo && conteudo.length > 5 && conteudo.length < 50;
+}
+
+export { validarEmail, validarNome, validarSenha, validarConteudo, validarTitulo };

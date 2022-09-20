@@ -1,12 +1,15 @@
 import passport from "passport";
-import { Strategy } from "passport-local";
+import local from "passport-local";
+import bearer from "passport-http-bearer"
 
 import { manipuladorUsuario } from "../api/repositories/usuario-repositorio.js";
 import { verificarSenha } from "../helpers/verificar-senhas.js";
+import { verificarJwt } from "../helpers/gerar-validar-jwt.js";
+import { segurancaEnv } from "../configs/envs.js";
 
-const usuarioRepositorio = manipuladorUsuario()
+const usuarioRepositorio = manipuladorUsuario();
 
-const localStrategy = new Strategy(
+const localStrategy = new local.Strategy(
     {
         usernameField: "email",
         passwordField: "senha",
@@ -14,7 +17,8 @@ const localStrategy = new Strategy(
     },
     async (email, senha, done) => {
         try {
-            const usuario = await usuarioRepositorio.buscarUsuario({email: email}, "id email senha emailVerificado refreshToken");
+            const camposDoUsuario = "id email senha emailVerificado refreshToken, cargo";
+            const usuario = await usuarioRepositorio.buscarUsuario({email: email}, camposDoUsuario);
             
             if (!usuario) throw "Credenciais invalidas";
             if(usuario.emailVerificado === false) throw "Esse usuario não confirmou seu email";
@@ -28,6 +32,20 @@ const localStrategy = new Strategy(
     }
 );
 
+const bearerStrategy = new bearer.Strategy(
+    async (token, done) => {
+        
+        try {
+            const payload = await verificarJwt(token, segurancaEnv.chaveJWT);
+            return done(null, payload, { token });
+        } catch (error) {
+            return done(error)
+        }
+
+    }
+)
+
 passport.use(localStrategy);
+passport.use(bearerStrategy);
 
 export { passport };

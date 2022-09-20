@@ -10,13 +10,15 @@ function repositorRedis (cliente) {
 
         async buscarDaMemoria (key) {
             const resultado = cliente.get(key);
+            const mensagemDeErro = "Falha ao buscar valor"
+            if (!resultado) throw mensagemDeErro;
 
             return resultado;
         },
 
         async conferirValorNaMemoria (key) {
-            const resultado = cliente.exists(key);
-
+            const resultado = await cliente.exists(key);
+            
             return !!resultado;
         },
 

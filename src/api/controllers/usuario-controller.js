@@ -28,11 +28,24 @@ const usuarioControllers = {
             const { accessToken, refreshToken } = await usuarioService.login(usuario)
             
             res.set("Authorization", accessToken);
-            return res.status(200).json({ msg: refreshToken });
+            return res.status(200).json({ refreshToken });
         } catch (error) {
             console.log(error)
             return res.status(500).json(error.message);
         }
+    }, 
+
+    async logout (req, res) {
+        try {
+            const { accessToken } = req;
+            const { id } = req.user;
+
+            const resultado = await usuarioService.logout(id, accessToken);
+
+            return res.status(202).json({ msg: resultado });
+        } catch (error) {
+            return res.status(500).json(error.message);
+        }      
     }
 }
 
